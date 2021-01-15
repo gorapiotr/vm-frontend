@@ -1,11 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  selector: 'app-view',
+  templateUrl: './view.component.html',
+  styleUrls: ['./view.component.scss']
 })
-export class AppComponent {
+export class ViewComponent implements OnInit {
+
   title = 'my-app';
 
   columnDefs = [
@@ -19,4 +20,10 @@ export class AppComponent {
     { make: 'Ford', model: 'Mondeo', price: 32000 },
     { make: 'Porsche', model: 'Boxter', price: 72000 }
   ];
+
+  constructor() { }
+
+  ngOnInit(): void {
+  }
+
 }
