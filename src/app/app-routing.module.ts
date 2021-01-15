@@ -1,16 +1,25 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import {PageNotFoundComponent} from './page-not-found/page-not-found.component';
+import {HomeComponent} from './home/home.component';
 
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'books',
+    redirectTo: 'home',
     pathMatch: 'full'
+  },
+  {
+    path: 'home',
+    component: HomeComponent
   },
   {
     path: 'books',
     loadChildren: () => import('./books/books.module').then((m) => m.BooksModule)
+  },
+  {
+    path: 'treeview',
+    loadChildren: () => import('./treeview/treeview.module').then((m) => m.TreeviewModule)
   },
   {
     path: '**',

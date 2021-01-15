@@ -1,0 +1,42 @@
+
+
+
+
+<div class="modal-header">
+  <h4 class="modal-title" id="modal-basic-title">Edytuj książkę</h4>
+  <button type="button" class="close" aria-label="Close" (click)="dismiss()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <form [formGroup]="form">
+
+    <div class="form-group">
+      <label for="name">Nazwa</label>
+      <input type="text" formControlName="name" class="form-control" id="name" placeholder="Wpisz nazwę książki">
+    </div>
+
+    <div class="form-group">
+      <label for="isbn">ISBN</label>
+      <input type="text" formControlName="isbn" class="form-control" id="name" placeholder="Wpisz numer isbn">
+    </div>
+
+    <div class="form-group">
+      <label for="categories">Kategorie</label>
+      <ng-select
+                 [items]="categories$ | async"
+                 [multiple]="true"
+                 [closeOnSelect]="false"
+                 [searchable]="false"
+                 bindLabel="name"
+                 bindValue="id"
+                 formControlName="categories"
+      >
+      </ng-select>
+    </div>
+
+  </form>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-outline-dark" (click)="save()">Zapisz</button>
+</div>
