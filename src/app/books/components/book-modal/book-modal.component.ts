@@ -4,6 +4,7 @@ import {Observable} from 'rxjs';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import {BooksDictionariesService} from '../../services/books-dictionaries.service';
 import {Book, BookForm, Category} from '../../models/book.model';
+import {ArrayValidator} from '../../../shared/validators/array-validator';
 
 @Component({
   selector: 'app-book-modal',
@@ -25,7 +26,7 @@ export class BookModalComponent implements OnInit{
 
   ngOnInit(): void {
     this._createForm();
-    this.categories$ = this._booksDictionariesService.getCategories()
+    this.categories$ = this._booksDictionariesService.getCategories();
   }
 
   dismiss(): void {
@@ -39,9 +40,9 @@ export class BookModalComponent implements OnInit{
 
   private _createForm(): void {
     this.form = this._fb.group({
-      name: [this.modalData?.name ?? null, [Validators.required]],
-      isbn: [this.modalData?.isbn ?? null, [Validators.required]],
-      categories: [this.modalData?.categories.map((item: Category) => item.id) ?? null]
+      name: [this.modalData?.name ?? null, [Validators.required, Validators.maxLength(255)]],
+      isbn: [this.modalData?.isbn ?? null, [Validators.required, Validators.maxLength(17)]],
+      categories: [this.modalData?.categories.map((item: Category) => item.id) ?? null, [ArrayValidator.requiredArray]]
     });
   }
 }

@@ -12,17 +12,19 @@
   <form [formGroup]="form">
 
     <div class="form-group">
-      <label for="name">Nazwa</label>
+      <label for="name">Nazwa*</label>
       <input type="text" formControlName="name" class="form-control" id="name" placeholder="Wpisz nazwę książki">
+      <app-input-validation [control]="form.controls.name"></app-input-validation>
     </div>
 
     <div class="form-group">
-      <label for="isbn">ISBN</label>
+      <label for="isbn">ISBN*</label>
       <input type="text" formControlName="isbn" class="form-control" id="name" placeholder="Wpisz numer isbn">
+      <app-input-validation [control]="form.controls.isbn"></app-input-validation>
     </div>
 
     <div class="form-group">
-      <label for="categories">Kategorie</label>
+      <label for="categories">Kategorie*</label>
       <ng-select
         [items]="categories$ | async"
         [multiple]="true"
@@ -33,10 +35,11 @@
         formControlName="categories"
       >
       </ng-select>
+      <app-input-validation [control]="form.controls.categories"></app-input-validation>
     </div>
 
   </form>
 </div>
 <div class="modal-footer">
-  <button type="button" class="btn btn-outline-dark" (click)="save()">Zapisz</button>
+  <button [disabled]="form.pristine || !form.valid || form.disabled" type="button" class="btn btn-outline-dark" (click)="save()">Zapisz</button>
 </div>

@@ -10,11 +10,12 @@ import {Papa} from 'ngx-papaparse';
 import {ServerErrorsInterceptor} from './interceptors/server-errors.interceptor';
 import {MainInterceptor} from './interceptors/main.interceptor';
 import {HandleErrorService} from './services/handle-error.service';
+import {InputValidationComponent} from './components/input-validation.component';
 
 
 
 @NgModule({
-  declarations: [],
+  declarations: [InputValidationComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -32,7 +33,8 @@ import {HandleErrorService} from './services/handle-error.service';
     HttpClientModule,
     ReactiveFormsModule,
     NgSelectModule,
-    TreeviewModule
+    TreeviewModule,
+    InputValidationComponent
   ],
   providers: [
     Papa,

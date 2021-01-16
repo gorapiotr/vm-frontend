@@ -1,0 +1,9 @@
+<ng-container *ngIf="control?.touched">
+  <div *ngIf="control?.errors?.required" class="text-danger">
+    <span>Pole jest wymagane</span>
+  </div>
+
+  <div *ngIf="control?.errors?.maxlength" class="text-danger">
+    <span>Pole może zawierać maksymalnie {{ control?.errors?.maxlength?.requiredLength }} znaków.</span>
+  </div>
+</ng-container>

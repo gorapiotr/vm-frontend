@@ -1,11 +1,14 @@
 import {Component, OnInit} from '@angular/core';
 import {BooksService} from '../services/books.service';
 import {BooksColumnsService} from '../services/books-columns.service';
-import {ColDef, GridReadyEvent} from 'ag-grid-community';
+import {ColDef, GridOptions, GridReadyEvent} from 'ag-grid-community';
 import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import {RemoveModalComponent} from '../components/remove-modal/remove-modal.component';
 import {BookModalComponent} from '../components/book-modal/book-modal.component';
 import {Book, BookForm} from '../models/book.model';
+import {SnotifyService} from 'ng-snotify';
+import {takeUntil} from 'rxjs/operators';
+import {BaseComponentClass} from '../../shared/classes/base-component.class';
 
 @Component({
   selector: 'app-view',
@@ -13,12 +16,12 @@ import {Book, BookForm} from '../models/book.model';
   styleUrls: ['./view.component.scss'],
   providers: [BooksService, BooksColumnsService]
 })
-export class ViewComponent implements OnInit {
+export class ViewComponent extends BaseComponentClass implements OnInit {
 
   columnDefs: ColDef[] = [];
   rows: Book[] = [];
 
-  gridOptions = {
+  gridOptions: GridOptions = {
     defaultColDef: {
       enableRowGroup: true,
       enablePivot: true,
@@ -37,8 +40,10 @@ export class ViewComponent implements OnInit {
   constructor(
     private readonly _dataService: BooksService,
     private readonly _columnService: BooksColumnsService,
-    private readonly _modalService: NgbModal
+    private readonly _modalService: NgbModal,
+    private readonly _toasters: SnotifyService
   ) {
+    super();
   }
 
   ngOnInit(): void {
@@ -52,7 +57,10 @@ export class ViewComponent implements OnInit {
 
     modal.result.then(
       () => {
-        this._dataService.removeBook(id).subscribe(() => {
+        this._toasters.success('Usunięto pozycję');
+        this._dataService.removeBook(id)
+          .pipe(takeUntil(this.finish$))
+          .subscribe(() => {
           this._getData();
         });
       });
@@ -64,7 +72,10 @@ export class ViewComponent implements OnInit {
 
     modal.result.then(
       (payload: BookForm) => {
-        this._dataService.addBook(payload).subscribe(() => {
+        this._toasters.success('Dodano nową pozycję');
+        this._dataService.addBook(payload)
+          .pipe(takeUntil(this.finish$))
+          .subscribe(() => {
           this._getData();
         });
       });
@@ -77,7 +88,10 @@ export class ViewComponent implements OnInit {
 
     modal.result.then(
       (payload: BookForm) => {
-        this._dataService.editBook(book.id, payload).subscribe(() => {
+        this._toasters.success('Zaktualizowano pozycję');
+        this._dataService.editBook(book.id, payload)
+          .pipe(takeUntil(this.finish$))
+          .subscribe(() => {
           this._getData();
         });
       });
@@ -88,7 +102,9 @@ export class ViewComponent implements OnInit {
   }
 
   private _getData(): void {
-    this._dataService.getBooks().subscribe((res: Book[]) => {
+    this._dataService.getBooks()
+      .pipe(takeUntil(this.finish$))
+      .subscribe((res: Book[]) => {
       this.rows = res;
     });
   }

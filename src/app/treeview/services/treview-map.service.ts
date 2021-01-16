@@ -5,22 +5,6 @@ import {PositionElement} from '../models/treview.model';
 @Injectable()
 export class TreviewMapService {
   constructTree(rows: string[][]): TreeviewItem[] {
-
-
-    //sasd
-
-    rows = [
-      ['a', 'a.a', 'a.a.a', 'a.a.a.a', 'a.a.a.a.a'],
-      ['b', 'b.b', 'b.b.b', 'b.b.b.b', 'b.b.b.b.b'],
-      ['', '', '', 'f.f', 'f.f.f'],
-      ['c', 'c.c', '', '', ''],
-      ['', 'c.d', '', '', ''],
-      ['', 'c.e', 'c.e.e', '', '']
-    ];
-
-    console.log(JSON.stringify(this.listToTree(this.prepareTreeStructureAsArray(rows))));
-
-
     //Remove headers
     rows.shift();
 
