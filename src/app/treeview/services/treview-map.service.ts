@@ -6,19 +6,27 @@ import {PositionElement} from '../models/treview.model';
 export class TreviewMapService {
   constructTree(rows: string[][]): TreeviewItem[] {
 
+
+    //sasd
+
+    rows = [
+      ['a', 'a.a', 'a.a.a', 'a.a.a.a', 'a.a.a.a.a'],
+      ['b', 'b.b', 'b.b.b', 'b.b.b.b', 'b.b.b.b.b'],
+      ['', '', '', 'f.f', 'f.f.f'],
+      ['c', 'c.c', '', '', ''],
+      ['', 'c.d', '', '', ''],
+      ['', 'c.e', 'c.e.e', '', '']
+    ];
+
+    console.log(JSON.stringify(this.listToTree(this.prepareTreeStructureAsArray(rows))));
+
+
     //Remove headers
     rows.shift();
 
-    // rows = [
-    //   ["a", "a.a", "a.a.a", "a.a.a.a", "a.a.a.a.a"],
-    //   ["b", "b.b", "b.b.b", "b.b.b.b", "b.b.b.b.b"],
-    //   ["", "", "", "f.f", "f.f.f"],
-    //   ["c", "c.c", "", "", ""],
-    //   ["", "c.d", "", "", ""],
-    //   ["", "c.e", "c.e.e", "", ""]
-    // ];
+    const tree: TreeItem[] = this.listToTree(this.prepareTreeStructureAsArray(rows));
 
-    return this.listToTree(this.prepareTreeStructureAsArray(rows));
+    return this.treeToTreeviewTree(tree);
   }
 
   prepareTreeStructureAsArray(rows: string[][]): PositionElement[] {
@@ -76,7 +84,7 @@ export class TreviewMapService {
     }
   }
 
-  listToTree(list: PositionElement[]): TreeviewItem[] {
+  listToTree(list: PositionElement[]): TreeItem[] {
     const map: { [key: string]: number } = {};
     const roots: TreeItem[] = [];
     let node: PositionElement = {} as PositionElement;
@@ -95,6 +103,11 @@ export class TreviewMapService {
       }
     }
 
+    return roots;
+  }
+
+  treeToTreeviewTree(roots: TreeItem[]): TreeviewItem[] {
     return roots.map((item: TreeItem) => new TreeviewItem(item));
   }
+
 }
