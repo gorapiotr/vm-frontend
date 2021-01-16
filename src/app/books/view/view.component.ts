@@ -1,10 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {BooksService} from '../services/books.service';
 import {BooksColumnsService} from '../services/books-columns.service';
-import {ColDef} from 'ag-grid-community';
+import {ColDef, GridReadyEvent} from 'ag-grid-community';
 import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import {RemoveModalComponent} from '../components/remove-modal/remove-modal.component';
 import {BookModalComponent} from '../components/book-modal/book-modal.component';
+import {Book, BookForm} from '../models/book.model';
 
 @Component({
   selector: 'app-view',
@@ -15,7 +16,7 @@ import {BookModalComponent} from '../components/book-modal/book-modal.component'
 export class ViewComponent implements OnInit {
 
   columnDefs: ColDef[] = [];
-  rows: any[] = [];
+  rows: Book[] = [];
 
   gridOptions = {
     defaultColDef: {
@@ -46,7 +47,7 @@ export class ViewComponent implements OnInit {
     this._getColumns();
   }
 
-  openRemoveModal({id}: { id: number }) {
+  openRemoveModal({id}: { id: number }): void {
     const modal: NgbModalRef = this._modalService.open(RemoveModalComponent);
 
     modal.result.then(
@@ -58,36 +59,36 @@ export class ViewComponent implements OnInit {
   }
 
 
-  openAddModal() {
+  openAddModal(): void {
     const modal: NgbModalRef = this._modalService.open(BookModalComponent);
 
     modal.result.then(
-      (payload: any) => {
+      (payload: BookForm) => {
         this._dataService.addBook(payload).subscribe(() => {
           this._getData();
         });
       });
   }
 
-  openEditModal(book: any) {
+  openEditModal(book: Book): void {
     const modal: NgbModalRef = this._modalService.open(BookModalComponent);
 
     modal.componentInstance.modalData = book;
 
     modal.result.then(
-      (payload: any) => {
+      (payload: BookForm) => {
         this._dataService.editBook(book.id, payload).subscribe(() => {
           this._getData();
         });
       });
   }
 
-  onGridReady(params: any) {
+  onGridReady(params: GridReadyEvent): void {
     params.api.sizeColumnsToFit();
   }
 
   private _getData(): void {
-    this._dataService.getBooks().subscribe((res) => {
+    this._dataService.getBooks().subscribe((res: Book[]) => {
       this.rows = res;
     });
   }
