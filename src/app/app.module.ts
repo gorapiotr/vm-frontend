@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HomeComponent } from './home/home.component';
+import {SnotifyModule, SnotifyService, ToastDefaults} from 'ng-snotify';
 
 @NgModule({
   declarations: [
@@ -17,8 +18,12 @@ import { HomeComponent } from './home/home.component';
     BrowserModule,
     AppRoutingModule,
     NgbModule,
+    SnotifyModule
   ],
-  providers: [],
+  providers: [
+    {provide: 'SnotifyToastConfig', useValue: ToastDefaults},
+    SnotifyService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
